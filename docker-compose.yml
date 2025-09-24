@@ -12,9 +12,10 @@ services:
     environment:
       - FALKORDB_PASSWORD=${FALKORDB_PASSWORD:-changeme}
       - FALKORDB_LOG_LEVEL=${FALKORDB_LOG_LEVEL:-INFO}
+    command: ["redis-server", "--requirepass", "${FALKORDB_PASSWORD:-changeme}"]
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${FALKORDB_PASSWORD:-changeme}", "ping"]
       interval: 30s
       timeout: 10s
       retries: 3
