@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  falkordb:
+    image: falkordb/falkordb:latest
+    container_name: falkordb
+    ports:
+      - "${FALKORDB_PORT:-6379}:6379"
+      - "${FALKORDB_WEB_PORT:-3000}:3000"
+    volumes:
+      - falkordb_data:/var/lib/falkordb/data
+    environment:
+      - FALKORDB_PASSWORD=${FALKORDB_PASSWORD:-changeme}
+      - FALKORDB_LOG_LEVEL=${FALKORDB_LOG_LEVEL:-INFO}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - falkordb-network
+
+  # Опционально: Redis Commander для удобного управления
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    environment:
+      - REDIS_HOSTS=falkordb:falkordb:6379:0:${FALKORDB_PASSWORD:-changeme}
+      - HTTP_USER=${REDIS_COMMANDER_USER:-admin}
+      - HTTP_PASSWORD=${REDIS_COMMANDER_PASSWORD:-admin}
+    ports:
+      - "${REDIS_COMMANDER_PORT:-8081}:8081"
+    depends_on:
+      - falkordb
+    networks:
+      - falkordb-network
+
+volumes:
+  falkordb_data:
+    driver: local
+
+networks:
+  falkordb-network:
+    driver: bridge
