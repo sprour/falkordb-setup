@@ -1,6 +1,4 @@
-# FalkorDB для Neuro-Sachok
-
-Развертывание FalkorDB через Coolify для проекта Neuro-Sachok.
+# FalkorDB 
 
 ## Быстрый старт
 

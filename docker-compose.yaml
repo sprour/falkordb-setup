@@ -10,12 +10,12 @@ services:
     volumes:
       - falkordb_data:/var/lib/falkordb/data
     environment:
-      - FALKORDB_PASSWORD=${FALKORDB_PASSWORD:-changeme}
+      - FALKORDB_PASSWORD=${FALKORDB_PASSWORD:-neuro_sachok_secure_2024}
       - FALKORDB_LOG_LEVEL=${FALKORDB_LOG_LEVEL:-INFO}
-    command: ["redis-server", "--requirepass", "${FALKORDB_PASSWORD:-changeme}"]
+    command: ["redis-server", "--requirepass", "${FALKORDB_PASSWORD:-neuro_sachok_secure_2024}"]
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${FALKORDB_PASSWORD:-changeme}", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${FALKORDB_PASSWORD:-neuro_sachok_secure_2024}", "ping"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -27,7 +27,7 @@ services:
     image: rediscommander/redis-commander:latest
     container_name: redis-commander
     environment:
-      - REDIS_HOSTS=falkordb:falkordb:6379:0:${FALKORDB_PASSWORD:-changeme}
+      - REDIS_HOSTS=falkordb:falkordb:6379:0:${FALKORDB_PASSWORD:-neuro_sachok_secure_2024}
       - HTTP_USER=${REDIS_COMMANDER_USER:-admin}
       - HTTP_PASSWORD=${REDIS_COMMANDER_PASSWORD:-admin}
     ports:
